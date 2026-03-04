@@ -83,7 +83,7 @@
             android:textColor="#FFFFFF"
             android:layout_marginBottom="16dp"/>
 
-        <!-- Go to Signup -->
+
         <TextView
             android:id="@+id/tvGoToSignup"
             android:layout_width="wrap_content"

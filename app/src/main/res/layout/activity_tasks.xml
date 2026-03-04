@@ -86,6 +86,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:divider="@null"
+        android:textColor="#090909"
         android:dividerHeight="8dp"/>
 
     <LinearLayout
@@ -161,6 +162,7 @@
                 android:layout_height="wrap_content"
                 android:text="Profile"
                 android:textSize="10sp"
+                android:textColor="#090909"
                 android:textColor="#6B7280"/>
         </LinearLayout>
     </LinearLayout>

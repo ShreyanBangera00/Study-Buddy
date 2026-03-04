@@ -110,6 +110,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:divider="@null"
+        android:textColor="#090909"
         android:dividerHeight="8dp"/>
 
 

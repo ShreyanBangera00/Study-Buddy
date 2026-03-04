@@ -162,7 +162,6 @@
                 android:layout_height="wrap_content"
                 android:text="Profile"
                 android:textSize="10sp"
-                android:textColor="#090909"
                 android:textColor="#6B7280"/>
         </LinearLayout>
     </LinearLayout>

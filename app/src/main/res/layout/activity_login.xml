@@ -65,7 +65,7 @@
             android:layout_marginBottom="6dp"/>
 
         <EditText
-            android:id="@+id/etPassword"
+            android:id="@+id/edtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter password"

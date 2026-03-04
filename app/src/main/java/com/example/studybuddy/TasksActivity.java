@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class TasksActivity extends AppCompatActivity {
 
-    EditText etTaskName;
+    EditText edtTaskName;
     Button btnAddTask;
     ListView lvTasks;
     LinearLayout navHome, navTasks, navReminders, navProfile;
@@ -29,7 +29,7 @@ public class TasksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
 
-        etTaskName = findViewById(R.id.edtTaskName);
+        edtTaskName = findViewById(R.id.edtTaskName);
         btnAddTask = findViewById(R.id.btnAddTask);
         lvTasks    = findViewById(R.id.lvTasks);
 
@@ -45,14 +45,14 @@ public class TasksActivity extends AppCompatActivity {
         btnAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String task = etTaskName.getText().toString().trim();
+                String task = edtTaskName.getText().toString().trim();
                 if (task.isEmpty()) {
-                    etTaskName.setError("Enter a task name");
+                    edtTaskName.setError("Enter a task name");
                     return;
                 }
                 taskList.add(task);
                 adapter.notifyDataSetChanged();
-                etTaskName.setText("");
+                edtTaskName.setText("");
                 Toast.makeText(TasksActivity.this, "Task added!", Toast.LENGTH_SHORT).show();
             }
         });

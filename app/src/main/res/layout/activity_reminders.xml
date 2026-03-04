@@ -52,7 +52,7 @@
             android:textColor="#374151"
             android:layout_marginBottom="4dp"/>
         <EditText
-            android:id="@+id/etReminderTitle"
+            android:id="@+id/edtReminderTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="e.g. Study Maths"
@@ -67,7 +67,7 @@
             android:textColor="#374151"
             android:layout_marginBottom="4dp"/>
         <EditText
-            android:id="@+id/etReminderTime"
+            android:id="@+id/edtReminderTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="e.g. 6:00 PM"

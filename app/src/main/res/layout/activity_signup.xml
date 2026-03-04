@@ -12,14 +12,14 @@
         android:gravity="center"
         android:padding="32dp">
 
-        <!-- Logo -->
+
         <ImageView
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:src="@drawable/ic_book"
             android:layout_marginBottom="12dp"/>
 
-        <!-- Title -->
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
             android:textColor="#6B7280"
             android:layout_marginBottom="32dp"/>
 
-        <!-- Name -->
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
             android:layout_marginBottom="6dp"/>
 
         <EditText
-            android:id="@+id/etName"
+            android:id="@+id/edtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Your full name"
@@ -55,7 +55,7 @@
             android:padding="12dp"
             android:layout_marginBottom="16dp"/>
 
-        <!-- Email -->
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
             android:layout_marginBottom="6dp"/>
 
         <EditText
-            android:id="@+id/etEmail"
+            android:id="@+id/edtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="your@email.com"
@@ -73,7 +73,7 @@
             android:padding="12dp"
             android:layout_marginBottom="16dp"/>
 
-        <!-- Password -->
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
             android:layout_marginBottom="6dp"/>
 
         <EditText
-            android:id="@+id/etPassword"
+            android:id="@+id/edtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="At least 6 characters"
@@ -91,7 +91,7 @@
             android:padding="12dp"
             android:layout_marginBottom="24dp"/>
 
-        <!-- Signup Button -->
+
         <Button
             android:id="@+id/btnSignup"
             android:layout_width="match_parent"
@@ -101,7 +101,7 @@
             android:textColor="#FFFFFF"
             android:layout_marginBottom="16dp"/>
 
-        <!-- Go to Login -->
+
         <TextView
             android:id="@+id/tvGoToLogin"
             android:layout_width="wrap_content"

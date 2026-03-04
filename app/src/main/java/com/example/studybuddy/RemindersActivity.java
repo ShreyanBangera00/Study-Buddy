@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class RemindersActivity extends AppCompatActivity {
 
-    EditText etReminderTitle, etReminderTime;
+    EditText edtReminderTitle, edtReminderTime;
     Button btnAddReminder;
     ListView lvReminders;
     LinearLayout navHome, navTasks, navReminders, navProfile;
@@ -29,8 +29,8 @@ public class RemindersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminders);
 
-        etReminderTitle = findViewById(R.id.etReminderTitle);
-        etReminderTime  = findViewById(R.id.etReminderTime);
+        edtReminderTitle = findViewById(R.id.edtReminderTitle);
+        edtReminderTime  = findViewById(R.id.edtReminderTime);
         btnAddReminder  = findViewById(R.id.btnAddReminder);
         lvReminders     = findViewById(R.id.lvReminders);
 
@@ -46,22 +46,22 @@ public class RemindersActivity extends AppCompatActivity {
         btnAddReminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title = etReminderTitle.getText().toString().trim();
-                String time  = etReminderTime.getText().toString().trim();
+                String title = edtReminderTitle.getText().toString().trim();
+                String time  = edtReminderTime.getText().toString().trim();
 
                 if (title.isEmpty()) {
-                    etReminderTitle.setError("Enter a reminder title");
+                    edtReminderTitle.setError("Enter a reminder title");
                     return;
                 }
                 if (time.isEmpty()) {
-                    etReminderTime.setError("Enter a time");
+                    edtReminderTime.setError("Enter a time");
                     return;
                 }
 
                 reminderList.add(title + " - " + time);
                 adapter.notifyDataSetChanged();
-                etReminderTitle.setText("");
-                etReminderTime.setText("");
+                edtReminderTitle.setText("");
+                edtReminderTime.setText("");
                 Toast.makeText(RemindersActivity.this, "Reminder added!", Toast.LENGTH_SHORT).show();
             }
         });

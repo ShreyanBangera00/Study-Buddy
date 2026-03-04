@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class SignupActivity extends AppCompatActivity {
 
-    EditText etName, etEmail, etPassword;
+    EditText edtName, edtEmail, edtPassword;
     Button btnSignup;
     TextView tvGoToLogin;
 
@@ -21,33 +21,33 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        etName      = findViewById(R.id.etName);
-        etEmail     = findViewById(R.id.etEmail);
-        etPassword  = findViewById(R.id.etPassword);
+        edtName      = findViewById(R.id.edtName);
+        edtEmail     = findViewById(R.id.edtEmail);
+        edtPassword  = findViewById(R.id.edtPassword);
         btnSignup   = findViewById(R.id.btnSignup);
         tvGoToLogin = findViewById(R.id.tvGoToLogin);
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name     = etName.getText().toString().trim();
-                String email    = etEmail.getText().toString().trim();
-                String password = etPassword.getText().toString().trim();
+                String name     = edtName.getText().toString().trim();
+                String email    = edtEmail.getText().toString().trim();
+                String password = edtPassword.getText().toString().trim();
 
                 if (name.isEmpty()) {
-                    etName.setError("Enter your name");
+                    edtName.setError("Enter your name");
                     return;
                 }
                 if (email.isEmpty()) {
-                    etEmail.setError("Enter your email");
+                    edtEmail.setError("Enter your email");
                     return;
                 }
                 if (password.isEmpty()) {
-                    etPassword.setError("Enter a password");
+                    edtPassword.setError("Enter a password");
                     return;
                 }
                 if (password.length() < 6) {
-                    etPassword.setError("Password must be at least 6 characters");
+                    edtPassword.setError("Password must be at least 6 characters");
                     return;
                 }
 

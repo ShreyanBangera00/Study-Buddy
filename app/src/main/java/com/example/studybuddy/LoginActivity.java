@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText etEmail, etPassword;
+    EditText edtEmail, edtPassword;
     Button btnLogin;
     TextView tvGoToSignup;
 
@@ -24,23 +24,23 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        etEmail      = findViewById(R.id.etEmail);
-        etPassword   = findViewById(R.id.etPassword);
+        edtEmail      = findViewById(R.id.edtEmail);
+        edtPassword   = findViewById(R.id.edtPassword);
         btnLogin     = findViewById(R.id.btnLogin);
         tvGoToSignup = findViewById(R.id.tvGoToSignup);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email    = etEmail.getText().toString().trim();
-                String password = etPassword.getText().toString().trim();
+                String email    = edtEmail.getText().toString().trim();
+                String password = edtPassword.getText().toString().trim();
 
                 if (email.isEmpty()) {
-                    etEmail.setError("Enter your email");
+                    edtEmail.setError("Enter your email");
                     return;
                 }
                 if (password.isEmpty()) {
-                    etPassword.setError("Enter your password");
+                    edtPassword.setError("Enter your password");
                     return;
                 }
 

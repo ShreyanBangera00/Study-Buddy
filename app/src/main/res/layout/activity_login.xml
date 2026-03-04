@@ -37,7 +37,7 @@
             android:textColor="#6B7280"
             android:layout_marginBottom="32dp"/>
 
-        <!-- Email -->
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

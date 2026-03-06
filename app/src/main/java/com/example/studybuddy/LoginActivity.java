@@ -3,36 +3,38 @@ package com.example.studybuddy;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.example.studybuddy.viewmodel.UserViewModel;
 
 public class LoginActivity extends AppCompatActivity {
 
     EditText edtEmail, edtPassword;
-    Button btnLogin;
-    TextView tvGoToSignup;
+    TextView btnLogin, tvGoToSignup;
 
-    String correctEmail    = "student@gmail.com";
-    String correctPassword = "123456";
+    UserViewModel userViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        edtEmail      = findViewById(R.id.edtEmail);
-        edtPassword   = findViewById(R.id.edtPassword);
+        edtEmail     = findViewById(R.id.edtEmail);
+        edtPassword  = findViewById(R.id.edtPassword);
         btnLogin     = findViewById(R.id.btnLogin);
         tvGoToSignup = findViewById(R.id.tvGoToSignup);
+
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email    = edtEmail.getText().toString().trim();
+                String email    = edtEmail.getText().toString().trim().toLowerCase();
                 String password = edtPassword.getText().toString().trim();
 
                 if (email.isEmpty()) {
@@ -44,13 +46,15 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (email.equals(correctEmail) && password.equals(correctPassword)) {
-                    Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
-                } else {
-                    Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-                }
+                userViewModel.login(email, password, user -> runOnUiThread(() -> {
+                    if (user != null) {
+                        Toast.makeText(LoginActivity.this, "Welcome back, " + user.getName() + "!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+                    }
+                }));
             }
         });
 

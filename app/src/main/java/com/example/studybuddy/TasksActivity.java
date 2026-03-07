@@ -23,13 +23,13 @@ public class TasksActivity extends AppCompatActivity {
     TextView btnAddTask;
     ListView lvTasks;
     LinearLayout navHome, navTasks, navReminders, navProfile;
-
     TaskViewModel taskViewModel;
     ArrayList<Task> taskObjects;
     TaskAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
 
@@ -46,8 +46,6 @@ public class TasksActivity extends AppCompatActivity {
         lvTasks.setAdapter(adapter);
 
         taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
-
-        // Only load tasks for the logged-in user
         taskViewModel.getTasksForUser(Session.getEmail()).observe(this, tasks -> {
             taskObjects.clear();
             taskObjects.addAll(tasks);

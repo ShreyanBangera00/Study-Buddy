@@ -23,13 +23,13 @@ public class RemindersActivity extends AppCompatActivity {
     TextView btnAddReminder;
     ListView lvReminders;
     LinearLayout navHome, navTasks, navReminders, navProfile;
-
     ReminderViewModel reminderViewModel;
     ArrayList<Reminder> reminderObjects;
     ReminderAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminders);
 
@@ -47,8 +47,6 @@ public class RemindersActivity extends AppCompatActivity {
         lvReminders.setAdapter(adapter);
 
         reminderViewModel = new ViewModelProvider(this).get(ReminderViewModel.class);
-
-        // Only load reminders for the logged-in user
         reminderViewModel.getRemindersForUser(Session.getEmail()).observe(this, reminders -> {
             reminderObjects.clear();
             reminderObjects.addAll(reminders);

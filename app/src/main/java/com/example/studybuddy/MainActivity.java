@@ -2,7 +2,6 @@ package com.example.studybuddy;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,11 +15,11 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout btnAddTask, btnReminders;
     LinearLayout navHome, navTasks, navReminders, navProfile;
     TextView tvPendingCount, tvDoneCount;
-
     TaskViewModel taskViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -34,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
         navProfile     = findViewById(R.id.navProfile);
 
         taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
-
-        // Only count tasks for the logged-in user
         taskViewModel.getTasksForUser(Session.getEmail()).observe(this, tasks -> {
             int pending = 0, done = 0;
             for (com.example.studybuddy.database.entities.Task t : tasks) {

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     TextView tvName, tvEmail, tvAvatarLetter, btnLogout;
     TextView tvTaskCount, tvReminderCount;
+    Switch switchDarkMode;
     LinearLayout navHome, navTasks, navReminders, navProfile;
 
     TaskViewModel taskViewModel;
@@ -23,6 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
@@ -32,15 +35,24 @@ public class ProfileActivity extends AppCompatActivity {
         btnLogout       = findViewById(R.id.btnLogout);
         tvTaskCount     = findViewById(R.id.tvTaskCount);
         tvReminderCount = findViewById(R.id.tvReminderCount);
+        switchDarkMode  = findViewById(R.id.switchDarkMode);
         navHome         = findViewById(R.id.navHome);
         navTasks        = findViewById(R.id.navTasks);
         navReminders    = findViewById(R.id.navReminders);
         navProfile      = findViewById(R.id.navProfile);
 
-        // Show logged in user info from Session
         tvName.setText(Session.getName());
         tvEmail.setText(Session.getEmail());
         tvAvatarLetter.setText(Session.getName().isEmpty() ? "?" : String.valueOf(Session.getName().charAt(0)).toUpperCase());
+
+        // Set switch to current theme state
+        switchDarkMode.setChecked(ThemeManager.isDarkMode(this));
+
+        // Toggle dark mode and restart activity to apply
+        switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            ThemeManager.setDarkMode(this, isChecked);
+            recreate();
+        });
 
         taskViewModel     = new ViewModelProvider(this).get(TaskViewModel.class);
         reminderViewModel = new ViewModelProvider(this).get(ReminderViewModel.class);

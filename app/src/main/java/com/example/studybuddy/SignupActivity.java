@@ -21,6 +21,7 @@ public class SignupActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
@@ -38,10 +39,9 @@ public class SignupActivity extends AppCompatActivity {
                 String name     = edtName.getText().toString().trim();
                 String email    = edtEmail.getText().toString().trim().toLowerCase();
                 String password = edtPassword.getText().toString().trim();
-
-                if (name.isEmpty())     { edtName.setError("Enter your name"); return; }
-                if (email.isEmpty())    { edtEmail.setError("Enter your email"); return; }
-                if (password.isEmpty()) { edtPassword.setError("Enter a password"); return; }
+                if (name.isEmpty())        { edtName.setError("Enter your name"); return; }
+                if (email.isEmpty())       { edtEmail.setError("Enter your email"); return; }
+                if (password.isEmpty())    { edtPassword.setError("Enter a password"); return; }
                 if (password.length() < 6) { edtPassword.setError("Password must be at least 6 characters"); return; }
 
                 userViewModel.getUserByEmail(email, existingUser -> runOnUiThread(() -> {

@@ -20,6 +20,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -35,8 +36,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email    = edtEmail.getText().toString().trim().toLowerCase();
                 String password = edtPassword.getText().toString().trim();
-
-                if (email.isEmpty()) { edtEmail.setError("Enter your email"); return; }
+                if (email.isEmpty())    { edtEmail.setError("Enter your email"); return; }
                 if (password.isEmpty()) { edtPassword.setError("Enter your password"); return; }
 
                 userViewModel.login(email, password, user -> runOnUiThread(() -> {

@@ -23,6 +23,6 @@ public interface TaskDao {
     @Update
     void update(Task task);
 
-    @Query("SELECT * FROM tasks ORDER BY id DESC")
-    LiveData<List<Task>> getAllTasks();
+    @Query("SELECT * FROM tasks WHERE user_email = :userEmail ORDER BY id DESC")
+    LiveData<List<Task>> getTasksForUser(String userEmail);
 }

@@ -15,14 +15,12 @@ import java.util.concurrent.Executors;
 public class ReminderRepository {
 
     private ReminderDao reminderDao;
-    private LiveData<List<Reminder>> allReminders;
     private ExecutorService executor;
 
     public ReminderRepository(Application application) {
         StudyBuddyDatabase db = StudyBuddyDatabase.getInstance(application);
-        reminderDao  = db.reminderDao();
-        allReminders = reminderDao.getAllReminders();
-        executor     = Executors.newSingleThreadExecutor();
+        reminderDao = db.reminderDao();
+        executor    = Executors.newSingleThreadExecutor();
     }
 
     public void insert(Reminder reminder) {
@@ -33,7 +31,7 @@ public class ReminderRepository {
         executor.execute(() -> reminderDao.delete(reminder));
     }
 
-    public LiveData<List<Reminder>> getAllReminders() {
-        return allReminders;
+    public LiveData<List<Reminder>> getRemindersForUser(String userEmail) {
+        return reminderDao.getRemindersForUser(userEmail);
     }
 }

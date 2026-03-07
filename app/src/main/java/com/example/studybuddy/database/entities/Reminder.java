@@ -16,12 +16,17 @@ public class Reminder {
     @ColumnInfo(name = "time")
     public String time;
 
-    public Reminder(String title, String time) {
-        this.title = title;
-        this.time  = time;
+    @ColumnInfo(name = "user_email")
+    public String userEmail;
+
+    public Reminder(String title, String time, String userEmail) {
+        this.title     = title;
+        this.time      = time;
+        this.userEmail = userEmail;
     }
 
-    public int getId()       { return id; }
-    public String getTitle() { return title; }
-    public String getTime()  { return time; }
+    public int getId()        { return id; }
+    public String getTitle()  { return title; }
+    public String getTime()   { return time; }
+    public String getUserEmail() { return userEmail; }
 }

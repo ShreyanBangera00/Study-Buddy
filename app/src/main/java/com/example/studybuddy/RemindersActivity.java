@@ -37,11 +37,10 @@ public class RemindersActivity extends AppCompatActivity {
         edtReminderTime  = findViewById(R.id.edtReminderTime);
         btnAddReminder   = findViewById(R.id.btnAddReminder);
         lvReminders      = findViewById(R.id.lvReminders);
-
-        navHome      = findViewById(R.id.navHome);
-        navTasks     = findViewById(R.id.navTasks);
-        navReminders = findViewById(R.id.navReminders);
-        navProfile   = findViewById(R.id.navProfile);
+        navHome          = findViewById(R.id.navHome);
+        navTasks         = findViewById(R.id.navTasks);
+        navReminders     = findViewById(R.id.navReminders);
+        navProfile       = findViewById(R.id.navProfile);
 
         reminderObjects = new ArrayList<>();
         adapter         = new ReminderAdapter(this, reminderObjects);
@@ -49,7 +48,8 @@ public class RemindersActivity extends AppCompatActivity {
 
         reminderViewModel = new ViewModelProvider(this).get(ReminderViewModel.class);
 
-        reminderViewModel.getAllReminders().observe(this, reminders -> {
+        // Only load reminders for the logged-in user
+        reminderViewModel.getRemindersForUser(Session.getEmail()).observe(this, reminders -> {
             reminderObjects.clear();
             reminderObjects.addAll(reminders);
             adapter.notifyDataSetChanged();
@@ -60,17 +60,9 @@ public class RemindersActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String title = edtReminderTitle.getText().toString().trim();
                 String time  = edtReminderTime.getText().toString().trim();
-
-                if (title.isEmpty()) {
-                    edtReminderTitle.setError("Enter a reminder title");
-                    return;
-                }
-                if (time.isEmpty()) {
-                    edtReminderTime.setError("Enter a time");
-                    return;
-                }
-
-                reminderViewModel.insert(new Reminder(title, time));
+                if (title.isEmpty()) { edtReminderTitle.setError("Enter a reminder title"); return; }
+                if (time.isEmpty())  { edtReminderTime.setError("Enter a time"); return; }
+                reminderViewModel.insert(new Reminder(title, time, Session.getEmail()));
                 edtReminderTitle.setText("");
                 edtReminderTime.setText("");
                 Toast.makeText(RemindersActivity.this, "Reminder added!", Toast.LENGTH_SHORT).show();

@@ -13,16 +13,16 @@ import java.util.List;
 public class ReminderViewModel extends AndroidViewModel {
 
     private ReminderRepository repository;
-    private LiveData<List<Reminder>> allReminders;
 
     public ReminderViewModel(Application application) {
         super(application);
-        repository   = new ReminderRepository(application);
-        allReminders = repository.getAllReminders();
+        repository = new ReminderRepository(application);
     }
 
     public void insert(Reminder reminder) { repository.insert(reminder); }
     public void delete(Reminder reminder) { repository.delete(reminder); }
 
-    public LiveData<List<Reminder>> getAllReminders() { return allReminders; }
+    public LiveData<List<Reminder>> getRemindersForUser(String userEmail) {
+        return repository.getRemindersForUser(userEmail);
+    }
 }

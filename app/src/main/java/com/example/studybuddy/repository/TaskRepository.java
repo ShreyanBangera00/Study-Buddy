@@ -15,13 +15,11 @@ import java.util.concurrent.Executors;
 public class TaskRepository {
 
     private TaskDao taskDao;
-    private LiveData<List<Task>> allTasks;
     private ExecutorService executor;
 
     public TaskRepository(Application application) {
         StudyBuddyDatabase db = StudyBuddyDatabase.getInstance(application);
         taskDao  = db.taskDao();
-        allTasks = taskDao.getAllTasks();
         executor = Executors.newSingleThreadExecutor();
     }
 
@@ -37,7 +35,7 @@ public class TaskRepository {
         executor.execute(() -> taskDao.update(task));
     }
 
-    public LiveData<List<Task>> getAllTasks() {
-        return allTasks;
+    public LiveData<List<Task>> getTasksForUser(String userEmail) {
+        return taskDao.getTasksForUser(userEmail);
     }
 }

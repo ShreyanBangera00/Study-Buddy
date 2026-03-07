@@ -24,67 +24,32 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnAddTask   = findViewById(R.id.btnAddTask);
-        btnReminders = findViewById(R.id.btnReminders);
+        btnAddTask     = findViewById(R.id.btnAddTask);
+        btnReminders   = findViewById(R.id.btnReminders);
         tvPendingCount = findViewById(R.id.tvPendingCount);
         tvDoneCount    = findViewById(R.id.tvDoneCount);
-
-        navHome      = findViewById(R.id.navHome);
-        navTasks     = findViewById(R.id.navTasks);
-        navReminders = findViewById(R.id.navReminders);
-        navProfile   = findViewById(R.id.navProfile);
+        navHome        = findViewById(R.id.navHome);
+        navTasks       = findViewById(R.id.navTasks);
+        navReminders   = findViewById(R.id.navReminders);
+        navProfile     = findViewById(R.id.navProfile);
 
         taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
 
-        // Observe tasks and update counts live
-        taskViewModel.getAllTasks().observe(this, tasks -> {
+        // Only count tasks for the logged-in user
+        taskViewModel.getTasksForUser(Session.getEmail()).observe(this, tasks -> {
             int pending = 0, done = 0;
             for (com.example.studybuddy.database.entities.Task t : tasks) {
-                if (t.isCompleted()) done++;
-                else pending++;
+                if (t.isCompleted()) done++; else pending++;
             }
             tvPendingCount.setText(String.valueOf(pending));
             tvDoneCount.setText(String.valueOf(done));
         });
 
-        btnAddTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, TasksActivity.class));
-            }
-        });
-
-        btnReminders.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, RemindersActivity.class));
-            }
-        });
-
-        navHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { }
-        });
-
-        navTasks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, TasksActivity.class));
-            }
-        });
-
-        navReminders.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, RemindersActivity.class));
-            }
-        });
-
-        navProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
-            }
-        });
+        btnAddTask.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, TasksActivity.class)));
+        btnReminders.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, RemindersActivity.class)));
+        navHome.setOnClickListener(v -> { });
+        navTasks.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, TasksActivity.class)));
+        navReminders.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, RemindersActivity.class)));
+        navProfile.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, ProfileActivity.class)));
     }
 }

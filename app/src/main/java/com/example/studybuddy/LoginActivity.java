@@ -16,7 +16,6 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText edtEmail, edtPassword;
     TextView btnLogin, tvGoToSignup;
-
     UserViewModel userViewModel;
 
     @Override
@@ -37,17 +36,12 @@ public class LoginActivity extends AppCompatActivity {
                 String email    = edtEmail.getText().toString().trim().toLowerCase();
                 String password = edtPassword.getText().toString().trim();
 
-                if (email.isEmpty()) {
-                    edtEmail.setError("Enter your email");
-                    return;
-                }
-                if (password.isEmpty()) {
-                    edtPassword.setError("Enter your password");
-                    return;
-                }
+                if (email.isEmpty()) { edtEmail.setError("Enter your email"); return; }
+                if (password.isEmpty()) { edtPassword.setError("Enter your password"); return; }
 
                 userViewModel.login(email, password, user -> runOnUiThread(() -> {
                     if (user != null) {
+                        Session.login(user.getEmail(), user.getName());
                         Toast.makeText(LoginActivity.this, "Welcome back, " + user.getName() + "!", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
@@ -58,11 +52,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        tvGoToSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, SignupActivity.class));
-            }
-        });
+        tvGoToSignup.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, SignupActivity.class)));
     }
 }

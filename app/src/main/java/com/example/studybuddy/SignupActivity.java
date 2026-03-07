@@ -17,7 +17,6 @@ public class SignupActivity extends AppCompatActivity {
 
     EditText edtName, edtEmail, edtPassword;
     TextView btnSignup, tvGoToLogin;
-
     UserViewModel userViewModel;
 
     @Override
@@ -40,30 +39,19 @@ public class SignupActivity extends AppCompatActivity {
                 String email    = edtEmail.getText().toString().trim().toLowerCase();
                 String password = edtPassword.getText().toString().trim();
 
-                if (name.isEmpty()) {
-                    edtName.setError("Enter your name");
-                    return;
-                }
-                if (email.isEmpty()) {
-                    edtEmail.setError("Enter your email");
-                    return;
-                }
-                if (password.isEmpty()) {
-                    edtPassword.setError("Enter a password");
-                    return;
-                }
-                if (password.length() < 6) {
-                    edtPassword.setError("Password must be at least 6 characters");
-                    return;
-                }
+                if (name.isEmpty())     { edtName.setError("Enter your name"); return; }
+                if (email.isEmpty())    { edtEmail.setError("Enter your email"); return; }
+                if (password.isEmpty()) { edtPassword.setError("Enter a password"); return; }
+                if (password.length() < 6) { edtPassword.setError("Password must be at least 6 characters"); return; }
 
                 userViewModel.getUserByEmail(email, existingUser -> runOnUiThread(() -> {
                     if (existingUser != null) {
                         edtEmail.setError("Email already registered");
                     } else {
                         userViewModel.insertAndConfirm(new User(name, email, password), () -> runOnUiThread(() -> {
-                            Toast.makeText(SignupActivity.this, "Account created! Welcome, " + name + "!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+                            Session.login(email, name);
+                            Toast.makeText(SignupActivity.this, "Welcome, " + name + "!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(SignupActivity.this, MainActivity.class));
                             finish();
                         }));
                     }
@@ -71,12 +59,6 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-        tvGoToLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SignupActivity.this, LoginActivity.class));
-                finish();
-            }
-        });
+        tvGoToLogin.setOnClickListener(v -> { startActivity(new Intent(SignupActivity.this, LoginActivity.class)); finish(); });
     }
 }

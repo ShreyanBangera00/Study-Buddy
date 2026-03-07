@@ -49,7 +49,7 @@ public class SignupActivity extends AppCompatActivity {
                         edtEmail.setError("Email already registered");
                     } else {
                         userViewModel.insertAndConfirm(new User(name, email, password), () -> runOnUiThread(() -> {
-                            Session.login(email, name);
+                            Session.login(SignupActivity.this, email, name);
                             Toast.makeText(SignupActivity.this, "Welcome, " + name + "!", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(SignupActivity.this, MainActivity.class));
                             finish();

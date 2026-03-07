@@ -46,7 +46,7 @@ public class TasksActivity extends AppCompatActivity {
         lvTasks.setAdapter(adapter);
 
         taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
-        taskViewModel.getTasksForUser(Session.getEmail()).observe(this, tasks -> {
+        taskViewModel.getTasksForUser(Session.getEmail(this)).observe(this, tasks -> {
             taskObjects.clear();
             taskObjects.addAll(tasks);
             adapter.notifyDataSetChanged();
@@ -57,7 +57,7 @@ public class TasksActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String title = edtTaskName.getText().toString().trim();
                 if (title.isEmpty()) { edtTaskName.setError("Enter a task name"); return; }
-                taskViewModel.insert(new Task(title, Session.getEmail()));
+                taskViewModel.insert(new Task(title, Session.getEmail(TasksActivity.this)));
                 edtTaskName.setText("");
                 Toast.makeText(TasksActivity.this, "Task added!", Toast.LENGTH_SHORT).show();
             }

@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 userViewModel.login(email, password, user -> runOnUiThread(() -> {
                     if (user != null) {
-                        Session.login(user.getEmail(), user.getName());
+                        Session.login(LoginActivity.this, user.getEmail(), user.getName());
                         Toast.makeText(LoginActivity.this, "Welcome back, " + user.getName() + "!", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();

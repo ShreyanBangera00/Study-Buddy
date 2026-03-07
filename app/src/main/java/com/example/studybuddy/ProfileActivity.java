@@ -19,7 +19,6 @@ public class ProfileActivity extends AppCompatActivity {
     TextView tvTaskCount, tvReminderCount;
     Switch switchDarkMode;
     LinearLayout navHome, navTasks, navReminders, navProfile;
-
     TaskViewModel taskViewModel;
     ReminderViewModel reminderViewModel;
 
@@ -41,14 +40,13 @@ public class ProfileActivity extends AppCompatActivity {
         navReminders    = findViewById(R.id.navReminders);
         navProfile      = findViewById(R.id.navProfile);
 
-        tvName.setText(Session.getName());
-        tvEmail.setText(Session.getEmail());
-        tvAvatarLetter.setText(Session.getName().isEmpty() ? "?" : String.valueOf(Session.getName().charAt(0)).toUpperCase());
+        String name  = Session.getName(this);
+        String email = Session.getEmail(this);
+        tvName.setText(name);
+        tvEmail.setText(email);
+        tvAvatarLetter.setText(name.isEmpty() ? "?" : String.valueOf(name.charAt(0)).toUpperCase());
 
-        // Set switch to current theme state
         switchDarkMode.setChecked(ThemeManager.isDarkMode(this));
-
-        // Toggle dark mode and restart activity to apply
         switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             ThemeManager.setDarkMode(this, isChecked);
             recreate();
@@ -57,16 +55,15 @@ public class ProfileActivity extends AppCompatActivity {
         taskViewModel     = new ViewModelProvider(this).get(TaskViewModel.class);
         reminderViewModel = new ViewModelProvider(this).get(ReminderViewModel.class);
 
-        taskViewModel.getTasksForUser(Session.getEmail()).observe(this, tasks ->
+        taskViewModel.getTasksForUser(email).observe(this, tasks ->
                 tvTaskCount.setText(String.valueOf(tasks.size())));
-
-        reminderViewModel.getRemindersForUser(Session.getEmail()).observe(this, reminders ->
+        reminderViewModel.getRemindersForUser(email).observe(this, reminders ->
                 tvReminderCount.setText(String.valueOf(reminders.size())));
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Session.logout();
+                Session.logout(ProfileActivity.this);
                 startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
                 finish();
             }

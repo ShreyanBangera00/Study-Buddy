@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         navProfile     = findViewById(R.id.navProfile);
 
         taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
-        taskViewModel.getTasksForUser(Session.getEmail()).observe(this, tasks -> {
+        taskViewModel.getTasksForUser(Session.getEmail(this)).observe(this, tasks -> {
             int pending = 0, done = 0;
             for (com.example.studybuddy.database.entities.Task t : tasks) {
                 if (t.isCompleted()) done++; else pending++;

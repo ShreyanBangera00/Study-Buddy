@@ -47,7 +47,7 @@ public class RemindersActivity extends AppCompatActivity {
         lvReminders.setAdapter(adapter);
 
         reminderViewModel = new ViewModelProvider(this).get(ReminderViewModel.class);
-        reminderViewModel.getRemindersForUser(Session.getEmail()).observe(this, reminders -> {
+        reminderViewModel.getRemindersForUser(Session.getEmail(this)).observe(this, reminders -> {
             reminderObjects.clear();
             reminderObjects.addAll(reminders);
             adapter.notifyDataSetChanged();
@@ -60,7 +60,7 @@ public class RemindersActivity extends AppCompatActivity {
                 String time  = edtReminderTime.getText().toString().trim();
                 if (title.isEmpty()) { edtReminderTitle.setError("Enter a reminder title"); return; }
                 if (time.isEmpty())  { edtReminderTime.setError("Enter a time"); return; }
-                reminderViewModel.insert(new Reminder(title, time, Session.getEmail()));
+                reminderViewModel.insert(new Reminder(title, time, Session.getEmail(RemindersActivity.this)));
                 edtReminderTitle.setText("");
                 edtReminderTime.setText("");
                 Toast.makeText(RemindersActivity.this, "Reminder added!", Toast.LENGTH_SHORT).show();

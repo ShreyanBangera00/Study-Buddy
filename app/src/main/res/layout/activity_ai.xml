@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F3FF">
+
+    <!-- Header -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:background="#7C3AED"
+        android:padding="16dp" android:paddingTop="28dp" android:gravity="center_vertical">
+        <TextView android:id="@+id/btnBack"
+            android:layout_width="36dp" android:layout_height="36dp"
+            android:text="←" android:textSize="22sp" android:textColor="#FFFFFF"
+            android:gravity="center" android:layout_marginEnd="12dp"
+            android:clickable="true" android:focusable="true"/>
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="AI Study Assistant" android:textSize="18sp"
+                android:textStyle="bold" android:textColor="#FFFFFF"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Powered by Gemini" android:textSize="11sp" android:textColor="#DDD6FE"/>
+        </LinearLayout>
+        <TextView android:id="@+id/btnClearChat"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Clear" android:textSize="12sp" android:textColor="#DDD6FE"
+            android:clickable="true" android:focusable="true"/>
+    </LinearLayout>
+
+    <!-- Chat list -->
+    <ListView android:id="@+id/lvChat"
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+        android:divider="@null" android:dividerHeight="0dp"
+        android:paddingTop="8dp" android:paddingBottom="8dp"
+        android:clipToPadding="false" android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"/>
+
+    <!-- Typing indicator -->
+    <LinearLayout android:id="@+id/layoutTyping"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:paddingStart="16dp" android:paddingBottom="4dp"
+        android:visibility="gone">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="🤖  AI is thinking..." android:textSize="12sp" android:textColor="#9D6FFF"
+            android:textStyle="italic"/>
+    </LinearLayout>
+
+    <!-- Input bar -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:background="#FFFFFF"
+        android:padding="10dp" android:elevation="8dp" android:gravity="center_vertical">
+        <EditText android:id="@+id/edtMessage"
+            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:hint="Ask anything about your studies..."
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLines="4" android:paddingStart="14dp" android:paddingEnd="14dp"
+            android:paddingTop="10dp" android:paddingBottom="10dp"
+            android:background="@drawable/input_bg" android:textSize="13sp"
+            android:textColor="#1E1B4B" android:layout_marginEnd="10dp"/>
+        <TextView android:id="@+id/btnSend"
+            android:layout_width="48dp" android:layout_height="48dp"
+            android:text="➤" android:textSize="18sp" android:textColor="#FFFFFF"
+            android:gravity="center" android:background="@drawable/purple"
+            android:clickable="true" android:focusable="true"/>
+    </LinearLayout>
+
+</LinearLayout>

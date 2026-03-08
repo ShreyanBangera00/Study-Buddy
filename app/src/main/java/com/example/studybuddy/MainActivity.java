@@ -12,7 +12,7 @@ import com.example.studybuddy.viewmodel.TaskViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
-    LinearLayout btnAddTask, btnReminders;
+    LinearLayout btnAddTask, btnReminders, btnAi;
     LinearLayout navHome, navTasks, navReminders, navProfile;
     TextView tvPendingCount, tvDoneCount;
     TaskViewModel taskViewModel;
@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnAddTask     = findViewById(R.id.btnAddTask);
         btnReminders   = findViewById(R.id.btnReminders);
+        btnAi          = findViewById(R.id.btnAi);
         tvPendingCount = findViewById(R.id.tvPendingCount);
         tvDoneCount    = findViewById(R.id.tvDoneCount);
         navHome        = findViewById(R.id.navHome);
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnAddTask.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, TasksActivity.class)));
         btnReminders.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, RemindersActivity.class)));
+        btnAi.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, AiActivity.class)));
         navHome.setOnClickListener(v -> { });
         navTasks.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, TasksActivity.class)));
         navReminders.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, RemindersActivity.class)));

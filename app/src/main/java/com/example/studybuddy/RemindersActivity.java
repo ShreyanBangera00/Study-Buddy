@@ -2,6 +2,8 @@ package com.example.studybuddy;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -16,16 +18,21 @@ import com.example.studybuddy.database.entities.Reminder;
 import com.example.studybuddy.viewmodel.ReminderViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RemindersActivity extends AppCompatActivity {
 
-    EditText edtReminderTitle, edtReminderTime;
-    TextView btnAddReminder;
+    EditText edtReminderTitle, edtReminderTime, edtSearch;
+    TextView btnAddReminder, tvResultCount;
     ListView lvReminders;
     LinearLayout navHome, navTasks, navReminders, navProfile;
+
     ReminderViewModel reminderViewModel;
-    ArrayList<Reminder> reminderObjects;
+    List<Reminder> allReminders = new ArrayList<>();
+    ArrayList<Reminder> displayedReminders = new ArrayList<>();
     ReminderAdapter adapter;
+
+    String searchQuery = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,22 +42,31 @@ public class RemindersActivity extends AppCompatActivity {
 
         edtReminderTitle = findViewById(R.id.edtReminderTitle);
         edtReminderTime  = findViewById(R.id.edtReminderTime);
+        edtSearch        = findViewById(R.id.edtSearch);
         btnAddReminder   = findViewById(R.id.btnAddReminder);
+        tvResultCount    = findViewById(R.id.tvResultCount);
         lvReminders      = findViewById(R.id.lvReminders);
         navHome          = findViewById(R.id.navHome);
         navTasks         = findViewById(R.id.navTasks);
         navReminders     = findViewById(R.id.navReminders);
         navProfile       = findViewById(R.id.navProfile);
 
-        reminderObjects = new ArrayList<>();
-        adapter         = new ReminderAdapter(this, reminderObjects);
+        adapter = new ReminderAdapter(this, displayedReminders);
         lvReminders.setAdapter(adapter);
 
         reminderViewModel = new ViewModelProvider(this).get(ReminderViewModel.class);
         reminderViewModel.getRemindersForUser(Session.getEmail(this)).observe(this, reminders -> {
-            reminderObjects.clear();
-            reminderObjects.addAll(reminders);
-            adapter.notifyDataSetChanged();
+            allReminders = reminders;
+            applySearch();
+        });
+
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchQuery = s.toString().trim().toLowerCase();
+                applySearch();
+            }
+            public void afterTextChanged(Editable s) {}
         });
 
         btnAddReminder.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +84,7 @@ public class RemindersActivity extends AppCompatActivity {
         });
 
         lvReminders.setOnItemLongClickListener((parent, view, position, id) -> {
-            reminderViewModel.delete(reminderObjects.get(position));
+            reminderViewModel.delete(displayedReminders.get(position));
             Toast.makeText(RemindersActivity.this, "Reminder deleted", Toast.LENGTH_SHORT).show();
             return true;
         });
@@ -77,5 +93,15 @@ public class RemindersActivity extends AppCompatActivity {
         navTasks.setOnClickListener(v -> { startActivity(new Intent(RemindersActivity.this, TasksActivity.class)); finish(); });
         navReminders.setOnClickListener(v -> { });
         navProfile.setOnClickListener(v -> { startActivity(new Intent(RemindersActivity.this, ProfileActivity.class)); finish(); });
+    }
+
+    private void applySearch() {
+        displayedReminders.clear();
+        for (Reminder r : allReminders) {
+            if (!searchQuery.isEmpty() && !r.getTitle().toLowerCase().contains(searchQuery)) continue;
+            displayedReminders.add(r);
+        }
+        adapter.notifyDataSetChanged();
+        tvResultCount.setText(displayedReminders.size() + " reminder" + (displayedReminders.size() == 1 ? "" : "s"));
     }
 }

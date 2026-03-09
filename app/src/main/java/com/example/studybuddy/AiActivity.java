@@ -1,6 +1,8 @@
 package com.example.studybuddy;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -22,9 +24,10 @@ import java.util.List;
 
 public class AiActivity extends AppCompatActivity {
 
-    private static final String API_KEY = "AIzaSyDpO4s187fhS3tHja-xJxkGSYUODlFm4Ts";
+    private static final String TAG = "AiActivity";
+    private static final String API_KEY = "";
     private static final String API_URL =
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + API_KEY;
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 
     EditText edtMessage;
     TextView btnSend, btnBack, btnClearChat;
@@ -37,8 +40,8 @@ public class AiActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_ai);
 
         edtMessage   = findViewById(R.id.edtMessage);
@@ -55,9 +58,7 @@ public class AiActivity extends AppCompatActivity {
         addAiMessage("Hi " + name + "! I'm your AI Study Assistant. Ask me anything — explanations, summaries, practice questions, study tips, or help with any subject!");
 
         btnSend.setOnClickListener(v -> sendMessage());
-
         btnBack.setOnClickListener(v -> finish());
-
         btnClearChat.setOnClickListener(v -> {
             messages.clear();
             conversationHistory = new JSONArray();
@@ -91,7 +92,28 @@ public class AiActivity extends AppCompatActivity {
 
     private String callGeminiApi(String userText) {
         try {
-            // Add user message to history
+            // Prime conversation on first message
+            if (conversationHistory.length() == 0) {
+                JSONObject systemMsg = new JSONObject();
+                systemMsg.put("role", "user");
+                JSONArray systemParts = new JSONArray();
+                systemParts.put(new JSONObject().put("text",
+                        "You are a helpful AI Study Assistant inside a student app called StudyBuddy. " +
+                                "Help students understand concepts, summarize topics, create practice questions, " +
+                                "give study tips, and explain things clearly. Keep responses concise and friendly. " +
+                                "Use plain text only, no markdown symbols like ** or ##."));
+                systemMsg.put("parts", systemParts);
+                conversationHistory.put(systemMsg);
+
+                JSONObject ackMsg = new JSONObject();
+                ackMsg.put("role", "model");
+                JSONArray ackParts = new JSONArray();
+                ackParts.put(new JSONObject().put("text", "Got it! I'm ready to help you study."));
+                ackMsg.put("parts", ackParts);
+                conversationHistory.put(ackMsg);
+            }
+
+            // Add user message
             JSONObject userMsg = new JSONObject();
             userMsg.put("role", "user");
             JSONArray userParts = new JSONArray();
@@ -99,20 +121,8 @@ public class AiActivity extends AppCompatActivity {
             userMsg.put("parts", userParts);
             conversationHistory.put(userMsg);
 
-            // Build request body
+            // Build request
             JSONObject requestBody = new JSONObject();
-
-            // System instruction
-            JSONObject systemInstruction = new JSONObject();
-            JSONArray sysParts = new JSONArray();
-            sysParts.put(new JSONObject().put("text",
-                    "You are a helpful AI Study Assistant inside a student productivity app called StudyBuddy. " +
-                            "Help students understand concepts, summarize topics, create practice questions, give study tips, " +
-                            "and explain things clearly. Keep responses concise and friendly. Use simple formatting — " +
-                            "avoid markdown symbols like ** or ## since this is a mobile app. Use plain text only."));
-            systemInstruction.put("parts", sysParts);
-            requestBody.put("system_instruction", systemInstruction);
-
             requestBody.put("contents", conversationHistory);
 
             JSONObject genConfig = new JSONObject();
@@ -120,25 +130,33 @@ public class AiActivity extends AppCompatActivity {
             genConfig.put("maxOutputTokens", 800);
             requestBody.put("generationConfig", genConfig);
 
-            // HTTP call
+            String bodyStr = requestBody.toString();
+            Log.d(TAG, "Sending request...");
+
+            // HTTP call — API key in header
             URL url = new URL(API_URL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setRequestProperty("x-goog-api-key", API_KEY);
             conn.setDoOutput(true);
-            conn.setConnectTimeout(15000);
-            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(20000);
+            conn.setReadTimeout(20000);
 
             OutputStream os = conn.getOutputStream();
-            os.write(requestBody.toString().getBytes("UTF-8"));
+            os.write(bodyStr.getBytes("UTF-8"));
+            os.flush();
             os.close();
 
             int responseCode = conn.getResponseCode();
+            Log.d(TAG, "Response code: " + responseCode);
+
             BufferedReader br;
             if (responseCode == 200) {
-                br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
             } else {
-                br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                br = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "UTF-8"));
             }
 
             StringBuilder sb = new StringBuilder();
@@ -146,7 +164,10 @@ public class AiActivity extends AppCompatActivity {
             while ((line = br.readLine()) != null) sb.append(line);
             br.close();
 
-            if (responseCode != 200) return null;
+            if (responseCode != 200) {
+                Log.e(TAG, "API error " + responseCode + ": " + sb.toString());
+                return null;
+            }
 
             // Parse response
             JSONObject jsonResponse = new JSONObject(sb.toString());
@@ -158,7 +179,7 @@ public class AiActivity extends AppCompatActivity {
                     .getJSONObject(0)
                     .getString("text");
 
-            // Add AI response to history
+            // Save to history
             JSONObject aiMsg = new JSONObject();
             aiMsg.put("role", "model");
             JSONArray aiParts = new JSONArray();
@@ -169,7 +190,7 @@ public class AiActivity extends AppCompatActivity {
             return aiText.trim();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Exception: " + e.getMessage(), e);
             return null;
         }
     }

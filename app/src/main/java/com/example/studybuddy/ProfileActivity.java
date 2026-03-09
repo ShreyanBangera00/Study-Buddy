@@ -3,6 +3,7 @@ package com.example.studybuddy;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -24,7 +25,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
@@ -46,10 +46,15 @@ public class ProfileActivity extends AppCompatActivity {
         tvEmail.setText(email);
         tvAvatarLetter.setText(name.isEmpty() ? "?" : String.valueOf(name.charAt(0)).toUpperCase());
 
+        // Set switch state without triggering listener
         switchDarkMode.setChecked(ThemeManager.isDarkMode(this));
-        switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            ThemeManager.setDarkMode(this, isChecked);
-            recreate();
+
+        switchDarkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // setDarkMode calls AppCompatDelegate which recreates all activities automatically
+                ThemeManager.setDarkMode(ProfileActivity.this, isChecked);
+            }
         });
 
         taskViewModel     = new ViewModelProvider(this).get(TaskViewModel.class);

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="windowBackground">#121212</color>
+    <color name="cardBackground">#1E1E1E</color>
+    <color name="textPrimary">#FFFFFF</color>
+    <color name="textSecondary">#AAAAAA</color>
+    <color name="purple">#9D5CF6</color>
+    <color name="pink">#F472B6</color>
+</resources>

@@ -1,22 +1,11 @@
 <resources>
 
-    <!-- Light Theme -->
-    <style name="Theme.StudyBuddy.Light" parent="Theme.Material3.Light.NoActionBar">
+    <!-- Base / Light Theme -->
+    <style name="Base.Theme.StudyBuddy" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">#7C3AED</item>
-    </style>
-
-    <!-- Dark Theme -->
-    <style name="Theme.StudyBuddy.Dark" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">#9D5CF6</item>
-        <item name="android:windowBackground">#121212</item>
-        <item name="android:colorBackground">#121212</item>
-        <item name="android:textColorPrimary">#FFFFFF</item>
-        <item name="android:textColorSecondary">#AAAAAA</item>
-    </style>
-
-    <!-- Default (kept for compatibility) -->
-    <style name="Base.Theme.StudyBuddy" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">#7C3AED</item>
+        <item name="colorPrimaryVariant">#5B21B6</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
     </style>
 
     <style name="Theme.StudyBuddy" parent="Base.Theme.StudyBuddy"/>

@@ -3,6 +3,8 @@ package com.example.studybuddy;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 public class ThemeManager {
 
     private static final String PREFS_NAME = "ThemePrefs";
@@ -17,13 +19,18 @@ public class ThemeManager {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit();
         editor.putBoolean(KEY_DARK, isDark);
         editor.apply();
+        // Apply immediately to the whole app
+        AppCompatDelegate.setDefaultNightMode(
+                isDark ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
+        );
     }
 
+    // Call this once at app startup (from SplashActivity)
     public static void applyTheme(Context context) {
         if (isDarkMode(context)) {
-            ((android.app.Activity) context).setTheme(R.style.Theme_StudyBuddy_Dark);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
-            ((android.app.Activity) context).setTheme(R.style.Theme_StudyBuddy_Light);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 }
